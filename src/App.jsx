@@ -62,16 +62,16 @@ const highlights = [
 
 const sectionIntroClass = "mb-8 grid max-w-3xl gap-4 md:mb-12";
 const eyebrowClass =
-  "inline-flex w-fit rounded-full border border-black/10 bg-white/55 px-3 py-1 text-[0.68rem] font-extrabold uppercase tracking-[0.28em] text-accent-deep backdrop-blur";
+  "inline-flex w-fit rounded-full border border-accent/15 bg-accent/8 px-3 py-1 text-[0.68rem] font-extrabold uppercase tracking-[0.28em] text-accent-deep backdrop-blur";
 const headingClass =
   "mt-4 max-w-[11ch] font-display text-4xl leading-[0.92] tracking-[-0.05em] text-balance text-ink sm:text-5xl lg:text-6xl";
 const bodyClass = "max-w-2xl text-sm leading-7 text-muted sm:text-base";
 const surfaceClass =
-  "border border-black/10 bg-white/78 shadow-[0_16px_40px_rgba(68,38,20,0.08)] md:bg-white/55 md:shadow-[0_24px_60px_rgba(68,38,20,0.1)] md:backdrop-blur";
+  "border border-accent/10 bg-white/82 shadow-[0_16px_40px_rgba(18,63,121,0.08)] md:bg-white/64 md:shadow-[0_24px_60px_rgba(18,63,121,0.12)] md:backdrop-blur";
 const primaryButtonClass =
-  "inline-flex min-h-12 items-center justify-center rounded-full bg-ink px-5 py-3 text-sm font-semibold text-paper transition hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-70";
+  "inline-flex min-h-12 items-center justify-center rounded-full bg-[linear-gradient(135deg,var(--color-accent-deep),var(--color-accent))] px-5 py-3 text-sm font-semibold text-paper shadow-[0_14px_30px_rgba(18,63,121,0.22)] transition hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-70";
 const secondaryButtonClass =
-  "inline-flex min-h-12 items-center justify-center rounded-full border border-black/10 bg-white/55 px-5 py-3 text-sm font-semibold text-ink transition hover:-translate-y-0.5";
+  "inline-flex min-h-12 items-center justify-center rounded-full border border-accent/15 bg-white/72 px-5 py-3 text-sm font-semibold text-accent-deep transition hover:-translate-y-0.5";
 
 const fadeUp = {
   initial: { opacity: 0, y: 36 },
@@ -188,7 +188,7 @@ function App() {
     <LazyMotion features={domAnimation}>
       <MotionConfig reducedMotion="user">
         <div className="bg-page-glow px-4 pb-28 pt-4 text-ink sm:px-5 lg:px-8">
-      <header className="sticky top-3 z-30 mx-auto flex w-full max-w-7xl items-center justify-between gap-3 rounded-full border border-white/60 bg-paper/92 px-4 py-3 shadow-[0_14px_32px_rgba(68,38,20,0.08)] md:bg-paper/75 md:shadow-[0_24px_60px_rgba(68,38,20,0.1)] md:backdrop-blur md:px-5">
+      <header className="sticky top-3 z-30 mx-auto flex w-full max-w-7xl items-center justify-between gap-3 rounded-full border border-white/70 bg-paper/92 px-4 py-3 shadow-[0_14px_32px_rgba(18,63,121,0.1)] md:bg-paper/78 md:shadow-[0_24px_60px_rgba(18,63,121,0.14)] md:backdrop-blur md:px-5">
         <a
           className="font-display text-sm font-bold uppercase tracking-[0.22em] text-ink sm:text-base"
           href="#inicio"
@@ -219,7 +219,7 @@ function App() {
           className="mx-auto grid min-h-[calc(100svh-5.5rem)] max-w-7xl items-center gap-6 py-8 md:py-12 lg:py-16"
           id="inicio"
         >
-          <m.div className="max-w-2xl">
+          <m.div className="max-w-4xl">
             <m.span
               className={eyebrowClass}
               initial={{ opacity: 0, y: 16 }}
@@ -277,7 +277,7 @@ function App() {
               {["Estrategia", "Experiencia", "Execucao"].map((item) => (
                 <div
                   key={item}
-                  className={`${surfaceClass} rounded-2xl px-4 py-4 text-sm font-semibold text-ink`}
+                  className={`${surfaceClass} rounded-2xl px-4 py-4 text-sm font-semibold text-accent-deep`}
                 >
                   {item}
                 </div>
@@ -285,35 +285,6 @@ function App() {
             </m.div>
           </m.div>
 
-          <div className="relative isolate hidden min-h-[27rem] overflow-hidden rounded-[2rem] bg-[linear-gradient(165deg,rgba(15,14,13,0.98),rgba(49,33,24,0.9))] shadow-[0_24px_60px_rgba(68,38,20,0.12)] lg:block lg:min-h-[42rem]">
-            <div className="absolute inset-4 rounded-[1.5rem] border border-white/10" />
-
-            <div className="absolute left-6 top-6 w-[calc(100%-3rem)] max-w-xs rounded-[1.4rem] border border-white/12 bg-white/7 px-4 py-4 text-white/85 backdrop-blur">
-              <span className="mb-3 inline-block text-[0.68rem] font-bold uppercase tracking-[0.24em] text-white/60">
-                Presenca premium
-              </span>
-              <strong className="block font-display text-xl leading-tight text-white sm:text-2xl">
-                Interfaces que passam confianca ja no primeiro scroll.
-              </strong>
-            </div>
-
-            <div
-              aria-hidden="true"
-              className="absolute left-1/2 top-1/2 aspect-square w-[24rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle_at_32%_30%,rgba(255,255,255,0.95),rgba(255,255,255,0.1)_25%,transparent_45%),radial-gradient(circle_at_52%_52%,#ffb686,#d96d38_45%,#6a2410_78%)] shadow-[0_0_120px_rgba(217,109,56,0.34),inset_0_-20px_40px_rgba(88,28,0,0.35)] saturate-105"
-            />
-
-            <div className="absolute bottom-6 right-6 w-[calc(100%-3rem)] max-w-xs rounded-[1.4rem] border border-white/12 bg-white/7 px-4 py-4 text-sm text-white/82 backdrop-blur">
-              <span className="mb-3 inline-block text-[0.68rem] font-bold uppercase tracking-[0.24em] text-white/60">
-                Entrega sob medida
-              </span>
-              <ul className="space-y-2 pl-4 leading-7">
-                <li>Landing pages estaticas</li>
-                <li>Aplicacoes web completas</li>
-                <li>Apps de celular</li>
-                <li>Automacoes</li>
-              </ul>
-            </div>
-          </div>
         </section>
 
         <section className="mx-auto grid max-w-7xl gap-4 pb-8 md:grid-cols-[minmax(0,1fr)_auto] md:items-center md:pb-16">
@@ -325,7 +296,7 @@ function App() {
             {["Clareza", "Responsividade", "Presenca"].map((item) => (
               <strong
                 key={item}
-                className="rounded-full border border-black/10 bg-white/50 px-4 py-3 text-xs font-semibold uppercase tracking-[0.18em] text-ink sm:text-sm"
+                className="rounded-full border border-accent/15 bg-accent/8 px-4 py-3 text-xs font-semibold uppercase tracking-[0.18em] text-accent-deep sm:text-sm"
               >
                 {item}
               </strong>
@@ -370,7 +341,7 @@ function App() {
               {workflow.map((step, index) => (
                 <div
                   key={step}
-                  className="grid gap-3 border-t border-black/10 py-5 last:border-b sm:grid-cols-[4.5rem_minmax(0,1fr)] sm:gap-4"
+                  className="grid gap-3 border-t border-accent/12 py-5 last:border-b sm:grid-cols-[4.5rem_minmax(0,1fr)] sm:gap-4"
                 >
                   <span className="font-display text-sm font-bold uppercase tracking-[0.22em] text-accent-deep">
                     {`0${index + 1}`}
@@ -404,7 +375,7 @@ function App() {
             {highlights.map((item, index) => (
               <m.article
                 key={item.number}
-                className="grid gap-3 border-t border-black/10 py-5 last:border-b sm:grid-cols-[5rem_minmax(0,1fr)] sm:gap-5"
+                className="grid gap-3 border-t border-accent/12 py-5 last:border-b sm:grid-cols-[5rem_minmax(0,1fr)] sm:gap-5"
                 {...fadeUp}
                 transition={{ ...fadeUp.transition, delay: index * 0.08 }}
               >
@@ -446,7 +417,7 @@ function App() {
             <AnimatePresence initial={false}>
               {showEmailForm ? (
                 <m.form
-                  className="grid gap-4 overflow-hidden rounded-[1.5rem] border border-black/10 bg-white/55 p-4 sm:p-5"
+                  className="grid gap-4 overflow-hidden rounded-[1.5rem] border border-accent/12 bg-white/62 p-4 sm:p-5"
                   onSubmit={handleEmailSubmit}
                   initial={{ opacity: 0, y: 18, height: 0 }}
                   animate={{ opacity: 1, y: 0, height: "auto" }}
@@ -457,7 +428,7 @@ function App() {
                     <label className="grid gap-2 text-sm font-medium text-ink">
                       Seu nome
                       <input
-                        className="min-h-12 rounded-2xl border border-black/10 bg-paper px-4 text-sm text-ink outline-none transition placeholder:text-muted/80 focus:border-accent"
+                        className="min-h-12 rounded-2xl border border-accent/12 bg-paper px-4 text-sm text-ink outline-none transition placeholder:text-muted/80 focus:border-accent"
                         type="text"
                         name="name"
                         value={emailForm.name}
@@ -470,7 +441,7 @@ function App() {
                     <label className="grid gap-2 text-sm font-medium text-ink">
                       Seu e-mail
                       <input
-                        className="min-h-12 rounded-2xl border border-black/10 bg-paper px-4 text-sm text-ink outline-none transition placeholder:text-muted/80 focus:border-accent"
+                        className="min-h-12 rounded-2xl border border-accent/12 bg-paper px-4 text-sm text-ink outline-none transition placeholder:text-muted/80 focus:border-accent"
                         type="email"
                         name="email"
                         value={emailForm.email}
@@ -484,7 +455,7 @@ function App() {
                   <label className="grid gap-2 text-sm font-medium text-ink">
                     Assunto
                     <input
-                      className="min-h-12 rounded-2xl border border-black/10 bg-paper px-4 text-sm text-ink outline-none transition placeholder:text-muted/80 focus:border-accent"
+                      className="min-h-12 rounded-2xl border border-accent/12 bg-paper px-4 text-sm text-ink outline-none transition placeholder:text-muted/80 focus:border-accent"
                       type="text"
                       name="subject"
                       value={emailForm.subject}
@@ -496,7 +467,7 @@ function App() {
                   <label className="grid gap-2 text-sm font-medium text-ink">
                     Mensagem
                     <textarea
-                      className="min-h-36 rounded-[1.5rem] border border-black/10 bg-paper px-4 py-3 text-sm text-ink outline-none transition placeholder:text-muted/80 focus:border-accent"
+                      className="min-h-36 rounded-[1.5rem] border border-accent/12 bg-paper px-4 py-3 text-sm text-ink outline-none transition placeholder:text-muted/80 focus:border-accent"
                       name="message"
                       value={emailForm.message}
                       onChange={handleEmailFieldChange}
@@ -525,7 +496,7 @@ function App() {
               {emailStatus.type === "success" ? (
                 <m.p
                   key="success-message"
-                  className="rounded-2xl border border-emerald-600/15 bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-800"
+                  className="rounded-2xl border border-accent/15 bg-[rgba(232,238,247,0.92)] px-4 py-3 text-sm font-medium text-accent-deep"
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
@@ -561,7 +532,7 @@ function App() {
       </footer>
 
       <nav
-        className="mobile-nav fixed inset-x-4 bottom-4 z-40 flex items-center justify-between gap-2 rounded-full border border-white/60 bg-paper/96 px-4 py-3 text-[0.72rem] font-semibold uppercase tracking-[0.14em] text-ink shadow-[0_14px_32px_rgba(68,38,20,0.1)] lg:hidden"
+        className="mobile-nav fixed inset-x-4 bottom-4 z-40 flex items-center justify-between gap-2 rounded-full border border-white/70 bg-paper/96 px-4 py-3 text-[0.72rem] font-semibold uppercase tracking-[0.14em] text-ink shadow-[0_14px_32px_rgba(18,63,121,0.14)] lg:hidden"
         aria-label="Navegacao mobile"
       >
         {navItems.map((item) => (
