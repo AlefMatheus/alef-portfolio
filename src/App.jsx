@@ -1,11 +1,12 @@
-import { motion, useScroll, useTransform } from "framer-motion";
+import { useState } from "react";
+import { AnimatePresence, motion, useScroll, useTransform } from "framer-motion";
 
 const whatsappLink =
   "https://wa.me/5524998547027?text=Ol%C3%A1%20Alef%2C%20vim%20pelo%20seu%20portf%C3%B3lio%20e%20quero%20falar%20sobre%20um%20projeto.";
 
 const navItems = [
-  { label: "Início", href: "#inicio" },
-  { label: "Soluções", href: "#solucoes" },
+  { label: "Inicio", href: "#inicio" },
+  { label: "Solucoes", href: "#solucoes" },
   { label: "Processo", href: "#processo" },
   { label: "Contato", href: "#contato" },
 ];
@@ -13,42 +14,42 @@ const navItems = [
 const solutions = [
   {
     eyebrow: "Landing pages",
-    title: "Páginas enxutas que explicam, convencem e convertem.",
-    text: "Estruturas claras para campanhas, lançamentos e presença digital com leitura rápida e CTA certeiro.",
+    title: "Paginas enxutas que explicam, convencem e convertem.",
+    text: "Estruturas claras para campanhas, lancamentos e presenca digital com leitura rapida e CTA certeiro.",
   },
   {
-    eyebrow: "Aplicações web",
-    title: "Sistemas e plataformas pensados para operação real.",
-    text: "Da área do cliente ao painel administrativo, com fluidez visual e base preparada para crescer junto com o negócio.",
+    eyebrow: "Aplicacoes web",
+    title: "Sistemas e plataformas pensados para operacao real.",
+    text: "Da area do cliente ao painel administrativo, com fluidez visual e base preparada para crescer junto com o negocio.",
   },
   {
-    eyebrow: "Apps e automações",
-    title: "Experiências móveis e fluxos que economizam tempo.",
-    text: "Aplicativos e automações para reduzir tarefas repetitivas, conectar ferramentas e acelerar o dia a dia do cliente.",
+    eyebrow: "Apps e automacoes",
+    title: "Experiencias moveis e fluxos que economizam tempo.",
+    text: "Aplicativos e automacoes para reduzir tarefas repetitivas, conectar ferramentas e acelerar o dia a dia do cliente.",
   },
 ];
 
 const workflow = [
-  "Entendo o objetivo do negócio e traduzo isso em uma direção de produto clara.",
-  "Desenho a experiência com foco em confiança, velocidade e facilidade de uso.",
-  "Implemento a solução completa e deixo tudo pronto para evoluir sem virar retrabalho.",
+  "Entendo o objetivo do negocio e traduzo isso em uma direcao de produto clara.",
+  "Desenho a experiencia com foco em confianca, velocidade e facilidade de uso.",
+  "Implemento a solucao completa e deixo tudo pronto para evoluir sem virar retrabalho.",
 ];
 
 const highlights = [
   {
     number: "01",
     title: "Posicionamento antes de tecnologia",
-    text: "Seu cliente final percebe clareza, credibilidade e resultado antes de notar qualquer detalhe técnico.",
+    text: "Seu cliente final percebe clareza, credibilidade e resultado antes de notar qualquer detalhe tecnico.",
   },
   {
     number: "02",
     title: "Entrega fullstack de ponta a ponta",
-    text: "Do layout à lógica, da interface ao sistema, com uma visão única para manter consistência no produto.",
+    text: "Do layout a logica, da interface ao sistema, com uma visao unica para manter consistencia no produto.",
   },
   {
     number: "03",
-    title: "Soluções modernas que servem ao negócio",
-    text: "Landing pages, plataformas, apps e automações desenhados para resolver problemas concretos e abrir novas oportunidades.",
+    title: "Solucoes modernas que servem ao negocio",
+    text: "Landing pages, plataformas, apps e automacoes desenhados para resolver problemas concretos e abrir novas oportunidades.",
   },
 ];
 
@@ -61,7 +62,7 @@ const bodyClass = "max-w-2xl text-sm leading-7 text-muted sm:text-base";
 const surfaceClass =
   "border border-black/10 bg-white/45 shadow-[0_30px_80px_rgba(68,38,20,0.12)] backdrop-blur";
 const primaryButtonClass =
-  "inline-flex min-h-12 items-center justify-center rounded-full bg-ink px-5 py-3 text-sm font-semibold text-paper transition hover:-translate-y-0.5";
+  "inline-flex min-h-12 items-center justify-center rounded-full bg-ink px-5 py-3 text-sm font-semibold text-paper transition hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-70";
 const secondaryButtonClass =
   "inline-flex min-h-12 items-center justify-center rounded-full border border-black/10 bg-white/55 px-5 py-3 text-sm font-semibold text-ink transition hover:-translate-y-0.5";
 
@@ -87,8 +88,95 @@ function SectionIntro({ label, title, text }) {
 function App() {
   const { scrollYProgress } = useScroll();
   const heroShift = useTransform(scrollYProgress, [0, 0.25], [0, 90]);
-  const orbShift = useTransform(scrollYProgress, [0, 0.25], [0, -60]);
   const year = new Date().getFullYear();
+  const [showEmailForm, setShowEmailForm] = useState(false);
+  const [emailForm, setEmailForm] = useState({
+    name: "",
+    email: "",
+    subject: "",
+    message: "",
+  });
+  const [emailStatus, setEmailStatus] = useState({
+    type: "idle",
+    message: "",
+  });
+
+  const handleEmailFieldChange = (event) => {
+    const { name, value } = event.target;
+
+    if (emailStatus.type !== "idle") {
+      setEmailStatus({
+        type: "idle",
+        message: "",
+      });
+    }
+
+    setEmailForm((current) => ({
+      ...current,
+      [name]: value,
+    }));
+  };
+
+  const handleEmailToggle = () => {
+    if (!showEmailForm) {
+      setEmailStatus({
+        type: "idle",
+        message: "",
+      });
+    }
+
+    setShowEmailForm((current) => !current);
+  };
+
+  const handleEmailSubmit = async (event) => {
+    event.preventDefault();
+
+    setEmailStatus({
+      type: "loading",
+      message: "Enviando mensagem...",
+    });
+
+    const payload = {
+      name: emailForm.name,
+      email: emailForm.email,
+      _subject: emailForm.subject || `Contato via portfolio - ${emailForm.name || "Novo lead"}`,
+      message: emailForm.message,
+      _captcha: "false",
+      _template: "table",
+    };
+
+    try {
+      const response = await fetch("https://formsubmit.co/ajax/alefmatheus.0101@gmail.com", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        throw new Error("Falha ao enviar.");
+      }
+
+      setEmailForm({
+        name: "",
+        email: "",
+        subject: "",
+        message: "",
+      });
+      setShowEmailForm(false);
+      setEmailStatus({
+        type: "success",
+        message: "Email enviado com sucesso. Vou te responder em breve.",
+      });
+    } catch {
+      setEmailStatus({
+        type: "error",
+        message: "Nao foi possivel enviar agora. Tente novamente em instantes.",
+      });
+    }
+  };
 
   return (
     <div className="bg-page-glow px-4 pb-28 pt-4 text-ink sm:px-5 lg:px-8">
@@ -120,7 +208,7 @@ function App() {
 
       <main>
         <section
-          className="mx-auto grid min-h-[calc(100svh-5.5rem)] max-w-7xl items-center gap-6 py-8 md:gap-8 md:py-12 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:py-16"
+          className="mx-auto grid min-h-[calc(100svh-5.5rem)] max-w-7xl items-center gap-6 py-8 md:py-12 lg:py-16"
           id="inicio"
         >
           <motion.div className="max-w-2xl" style={{ y: heroShift }}>
@@ -139,7 +227,7 @@ function App() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.85, delay: 0.1 }}
             >
-              Soluções modernas para negócios que precisam parecer sérios e funcionar bem.
+              Solucoes modernas para negocios que precisam parecer serios e funcionar bem.
             </motion.h1>
 
             <motion.p
@@ -148,9 +236,9 @@ function App() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.85, delay: 0.2 }}
             >
-              Meu foco não é vender tecnologia por tecnologia. Eu entrego landing pages,
-              aplicações web, apps e automações que resolvem o problema certo e valorizam a
-              presença digital do cliente.
+              Meu foco nao e vender tecnologia por tecnologia. Eu entrego landing pages,
+              aplicacoes web, apps e automacoes que resolvem o problema certo e valorizam a
+              presenca digital do cliente.
             </motion.p>
 
             <motion.div
@@ -160,7 +248,7 @@ function App() {
               transition={{ duration: 0.85, delay: 0.3 }}
             >
               <a className={primaryButtonClass} href="#solucoes">
-                Ver soluções
+                Ver solucoes
               </a>
               <a
                 className={secondaryButtonClass}
@@ -178,7 +266,7 @@ function App() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.85, delay: 0.4 }}
             >
-              {["Estratégia", "Experiência", "Execução"].map((item) => (
+              {["Estrategia", "Experiencia", "Execucao"].map((item) => (
                 <div
                   key={item}
                   className={`${surfaceClass} rounded-2xl px-4 py-4 text-sm font-semibold text-ink`}
@@ -189,18 +277,15 @@ function App() {
             </motion.div>
           </motion.div>
 
-          <motion.div
-            className="relative isolate min-h-[27rem] overflow-hidden rounded-[2rem] bg-[linear-gradient(165deg,rgba(15,14,13,0.98),rgba(49,33,24,0.9))] shadow-[0_30px_80px_rgba(68,38,20,0.12)] sm:min-h-[32rem] lg:min-h-[42rem]"
-            style={{ y: orbShift }}
-          >
+          <div className="hidden relative isolate min-h-[27rem] overflow-hidden rounded-[2rem] bg-[linear-gradient(165deg,rgba(15,14,13,0.98),rgba(49,33,24,0.9))] shadow-[0_30px_80px_rgba(68,38,20,0.12)] sm:min-h-[32rem] lg:min-h-[42rem]">
             <div className="absolute inset-4 rounded-[1.5rem] border border-white/10" />
 
             <div className="absolute left-4 top-4 w-[calc(100%-2rem)] max-w-xs rounded-[1.4rem] border border-white/12 bg-white/7 px-4 py-4 text-white/85 backdrop-blur md:left-6 md:top-6">
               <span className="mb-3 inline-block text-[0.68rem] font-bold uppercase tracking-[0.24em] text-white/60">
-                Presença premium
+                Presenca premium
               </span>
               <strong className="block font-display text-xl leading-tight text-white sm:text-2xl">
-                Interfaces que passam confiança já no primeiro scroll.
+                Interfaces que passam confianca ja no primeiro scroll.
               </strong>
             </div>
 
@@ -214,22 +299,22 @@ function App() {
                 Entrega sob medida
               </span>
               <ul className="space-y-2 pl-4 leading-7">
-                <li>Landing pages estáticas</li>
-                <li>Aplicações web completas</li>
+                <li>Landing pages estaticas</li>
+                <li>Aplicacoes web completas</li>
                 <li>Apps de celular</li>
-                <li>Automações</li>
+                <li>Automacoes</li>
               </ul>
             </div>
-          </motion.div>
+          </div>
         </section>
 
         <section className="mx-auto grid max-w-7xl gap-4 pb-8 md:grid-cols-[minmax(0,1fr)_auto] md:items-center md:pb-16">
           <motion.p className="max-w-2xl text-sm leading-7 text-muted sm:text-base" {...fadeUp}>
-            Soluções pensadas para transformar ideia em produto claro, rápido e pronto para
+            Solucoes pensadas para transformar ideia em produto claro, rapido e pronto para
             gerar resultado.
           </motion.p>
           <motion.div className="flex flex-wrap gap-3" {...fadeUp}>
-            {["Clareza", "Responsividade", "Presença"].map((item) => (
+            {["Clareza", "Responsividade", "Presenca"].map((item) => (
               <strong
                 key={item}
                 className="rounded-full border border-black/10 bg-white/50 px-4 py-3 text-xs font-semibold uppercase tracking-[0.18em] text-ink sm:text-sm"
@@ -242,9 +327,9 @@ function App() {
 
         <section className="mx-auto max-w-7xl py-10 sm:py-14 lg:py-20" id="solucoes">
           <SectionIntro
-            label="Soluções"
+            label="Solucoes"
             title="O produto precisa resolver. O visual precisa sustentar esse valor."
-            text="Cada frente foi organizada para mostrar o tipo de entrega que faz sentido para clientes que querem algo moderno, confiável e alinhado ao momento do negócio."
+            text="Cada frente foi organizada para mostrar o tipo de entrega que faz sentido para clientes que querem algo moderno, confiavel e alinhado ao momento do negocio."
           />
 
           <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
@@ -268,8 +353,8 @@ function App() {
         <section className="mx-auto max-w-7xl py-10 sm:py-14 lg:py-20" id="processo">
           <SectionIntro
             label="Processo"
-            title="Uma construção enxuta, mas com visão de sistema."
-            text="Eu uno direção visual, lógica de produto e implementação para evitar soluções bonitas por fora e frágeis por dentro."
+            title="Uma construcao enxuta, mas com visao de sistema."
+            text="Eu uno direcao visual, logica de produto e implementacao para evitar solucoes bonitas por fora e frageis por dentro."
           />
 
           <div className="grid gap-6 lg:grid-cols-[minmax(0,0.92fr)_minmax(0,0.8fr)]">
@@ -294,7 +379,7 @@ function App() {
               <span className={eyebrowClass}>Meu posicionamento</span>
               <p className="mt-4 text-base leading-8 text-muted">
                 Sou Desenvolvedor Fullstack e Engenheiro de Sistemas, mas a conversa com o
-                cliente começa em solução, não em stack. O que importa é entregar algo moderno,
+                cliente comeca em solucao, nao em stack. O que importa e entregar algo moderno,
                 responsivo, funcional e pronto para sustentar crescimento.
               </p>
             </motion.div>
@@ -304,7 +389,7 @@ function App() {
         <section className="mx-auto max-w-7xl py-10 sm:py-14 lg:py-20">
           <SectionIntro
             label="Diferencial"
-            title="Você não precisa só de código. Precisa de direção, consistência e entrega."
+            title="Voce nao precisa so de codigo. Precisa de direcao, consistencia e entrega."
           />
 
           <div className="grid">
@@ -333,22 +418,130 @@ function App() {
           <motion.div className={`${surfaceClass} grid gap-5 rounded-[2rem] p-6 sm:p-8`} {...fadeUp}>
             <span className={eyebrowClass}>Contato</span>
             <h2 className="font-display text-3xl leading-[0.96] tracking-[-0.05em] text-balance text-ink sm:text-4xl lg:text-5xl">
-              Se você quer tirar um projeto do papel com mais clareza e mais presença, vamos
+              Se voce quer tirar um projeto do papel com mais clareza e mais presenca, vamos
               conversar.
             </h2>
             <p className="max-w-3xl text-sm leading-7 text-muted sm:text-base">
-              Posso te ajudar a construir desde uma página de venda até uma aplicação completa,
-              um app mobile ou uma automação que reduza trabalho manual.
+              Posso te ajudar a construir desde uma pagina de venda ate uma aplicacao completa,
+              um app mobile ou uma automacao que reduza trabalho manual.
             </p>
 
             <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
               <a className={primaryButtonClass} href={whatsappLink} target="_blank" rel="noreferrer">
                 Conversar no WhatsApp
               </a>
-              <a className={secondaryButtonClass} href="mailto:contato@alefgarcia.dev">
+              <button className={secondaryButtonClass} type="button" onClick={handleEmailToggle}>
                 Enviar e-mail
-              </a>
+              </button>
             </div>
+
+            <AnimatePresence initial={false}>
+              {showEmailForm ? (
+                <motion.form
+                  className="grid gap-4 overflow-hidden rounded-[1.5rem] border border-black/10 bg-white/55 p-4 sm:p-5"
+                  onSubmit={handleEmailSubmit}
+                  initial={{ opacity: 0, y: 18, height: 0 }}
+                  animate={{ opacity: 1, y: 0, height: "auto" }}
+                  exit={{ opacity: 0, y: -12, height: 0 }}
+                  transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                >
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    <label className="grid gap-2 text-sm font-medium text-ink">
+                      Seu nome
+                      <input
+                        className="min-h-12 rounded-2xl border border-black/10 bg-paper px-4 text-sm text-ink outline-none transition placeholder:text-muted/80 focus:border-accent"
+                        type="text"
+                        name="name"
+                        value={emailForm.name}
+                        onChange={handleEmailFieldChange}
+                        placeholder="Como voce se chama?"
+                        required
+                      />
+                    </label>
+
+                    <label className="grid gap-2 text-sm font-medium text-ink">
+                      Seu e-mail
+                      <input
+                        className="min-h-12 rounded-2xl border border-black/10 bg-paper px-4 text-sm text-ink outline-none transition placeholder:text-muted/80 focus:border-accent"
+                        type="email"
+                        name="email"
+                        value={emailForm.email}
+                        onChange={handleEmailFieldChange}
+                        placeholder="voce@exemplo.com"
+                        required
+                      />
+                    </label>
+                  </div>
+
+                  <label className="grid gap-2 text-sm font-medium text-ink">
+                    Assunto
+                    <input
+                      className="min-h-12 rounded-2xl border border-black/10 bg-paper px-4 text-sm text-ink outline-none transition placeholder:text-muted/80 focus:border-accent"
+                      type="text"
+                      name="subject"
+                      value={emailForm.subject}
+                      onChange={handleEmailFieldChange}
+                      placeholder="Sobre o que voce quer falar?"
+                    />
+                  </label>
+
+                  <label className="grid gap-2 text-sm font-medium text-ink">
+                    Mensagem
+                    <textarea
+                      className="min-h-36 rounded-[1.5rem] border border-black/10 bg-paper px-4 py-3 text-sm text-ink outline-none transition placeholder:text-muted/80 focus:border-accent"
+                      name="message"
+                      value={emailForm.message}
+                      onChange={handleEmailFieldChange}
+                      placeholder="Conte um pouco sobre o projeto, prazo ou objetivo."
+                      required
+                    />
+                  </label>
+
+                  <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+                    <button className={primaryButtonClass} type="submit" disabled={emailStatus.type === "loading"}>
+                      {emailStatus.type === "loading" ? "Enviando..." : "Enviar mensagem"}
+                    </button>
+                    <button
+                      className={secondaryButtonClass}
+                      type="button"
+                      onClick={() => setShowEmailForm(false)}
+                    >
+                      Fechar formulario
+                    </button>
+                  </div>
+                </motion.form>
+              ) : null}
+            </AnimatePresence>
+
+            <AnimatePresence mode="wait">
+              {emailStatus.type === "success" ? (
+                <motion.p
+                  key="success-message"
+                  className="rounded-2xl border border-emerald-600/15 bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-800"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  {emailStatus.message}
+                </motion.p>
+              ) : null}
+            </AnimatePresence>
+
+            <AnimatePresence mode="wait">
+              {emailStatus.type === "error" ? (
+                <motion.p
+                  key="error-message"
+                  className="rounded-2xl border border-red-600/15 bg-red-50 px-4 py-3 text-sm font-medium text-red-700"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  {emailStatus.message}
+                </motion.p>
+              ) : null}
+            </AnimatePresence>
           </motion.div>
         </section>
       </main>
@@ -361,7 +554,7 @@ function App() {
 
       <nav
         className="fixed inset-x-4 bottom-4 z-40 flex items-center justify-between gap-2 rounded-full border border-white/50 bg-paper/85 px-4 py-3 text-[0.72rem] font-semibold uppercase tracking-[0.14em] text-ink shadow-[0_30px_80px_rgba(68,38,20,0.12)] backdrop-blur lg:hidden"
-        aria-label="Navegação mobile"
+        aria-label="Navegacao mobile"
       >
         {navItems.map((item) => (
           <a
